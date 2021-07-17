@@ -54,6 +54,6 @@ sellcross(Reacter1,Reacter1_avg,Reacter2,Reacter2_avg,_50) =>
     crossunder(Reacter2,_50)
     crossunder(Reacter2_avg,_50)
 
-// following code seems same but does diffrent thing which is not right thing to do 
+// following code seems same but does diffrent thing which is not right thing to do...delete the 2 lines before adding to chart
 buycross(Reacter1,Reacter1_avg,Reacter2,Reacter2_avg,_50) =>
   crossover(Reacter1,_50) and crossover(Reacter1_avg,_50) and crossover(Reacter2,_50) and crossover(Reacter2_avg,_50) 
