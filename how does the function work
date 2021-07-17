@@ -1,0 +1,32 @@
+// paste this code in pine editor on https://www.tradingview.com
+// This source code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © Unknown_TracerBUNNY
+
+//@version=4
+study(" how this functions work " ,overlay=true)
+// getting rsi ( relative strength index ) indicator
+
+rsi_1 = rsi(close, 5)
+rsi_2 = rsi(close, 10)
+rsi_3 = rsi(close, 15)
+rsi_4 = rsi(close, 20)
+
+// custom functions   true if all '4 values' crossed over '50' otherwise false
+// i dont know why but some times this does not properly but does my work as i dont use it alone and use some other indicators for conformation
+buycross(Reacter1,Reacter1_avg,Reacter2,Reacter2_avg,_50) =>
+    crossover(Reacter1,_50)
+    crossover(Reacter1_avg,_50)
+    crossover(Reacter2,_50)
+    crossover(Reacter2_avg,_50)
+// custom functions   true if all '4 values' crossed under '50' otherwise false
+sellcross(Reacter1,Reacter1_avg,Reacter2,Reacter2_avg,_50) =>
+    crossunder(Reacter1,_50)
+    crossunder(Reacter1_avg,_50)
+    crossunder(Reacter2,_50)
+    crossunder(Reacter2_avg,_50)
+
+buy  =  buycross(rsi_1 , rsi_2 , rsi_3 , rsi_4 , 50) 
+sell = sellcross(rsi_1 , rsi_2 , rsi_3 , rsi_4 , 50) 
+
+plotshape(buy  , style=shape.arrowup   , text = "all rsi have crossed above 50 ", color=color.green , location=location.belowbar)
+plotshape(sell , style=shape.arrowdown , text = "all rsi have crossed below 50 ", color=color.red , location=location.abovebar)
