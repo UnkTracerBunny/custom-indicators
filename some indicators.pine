@@ -42,7 +42,7 @@ plot(Xtr,color=color.green)
 // following are the 2 most difficult  custom functions i have ever made  and i dont have any idea how to do this in python
 // basically this function checks the whether the given 4 values (or any given indicator as its input) cross above the given 50 thresshold level ,  and opposite for other one 
 // instead of cross above it does the same but for cross below. untill all 4 lines are true then only it is true other wise false
-
+// Reactor-- is a like a variable ....implimentation of this functiions are in other file
 buycross(Reacter1,Reacter1_avg,Reacter2,Reacter2_avg,_50) =>
     crossover(Reacter1,_50)
     crossover(Reacter1_avg,_50)
