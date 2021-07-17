@@ -1,0 +1,59 @@
+
+// paste this code in pine editor on https://www.tradingview.com
+// This source code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © Unknown_TracerBUNNY
+
+//@version=4
+study("few custom indicators " ,overlay=true)
+// first indicator
+short_stop = lowest(22)+3*atr(22)
+long_stop  = highest(22)-3*atr(22)
+shortvs = 0.0
+longvs = 0.0
+shortvs:=na(shortvs[1]) ? short_stop : iff(close>shortvs[1], short_stop , min(short_stop,shortvs[1]))
+longvs:=na(longvs[1]) ? long_stop : iff(close<longvs[1], long_stop, max(long_stop,longvs[1]))
+longswitch=iff (close>=shortvs[1] and close[1]<shortvs[1] , 1 ,  0)
+shortswitch=iff (close<=longvs[1] and close[1]>longvs[1] ,  1 ,  0)
+direction =0
+direction := iff(na(direction[1]), 0, iff (direction[1]<=0 and longswitch, 1, iff (direction[1]>=0 and shortswitch, -1, direction[1])))
+pc=direction>0?longvs:shortvs                           // pc is the final computed indicator
+
+plot(pc,color=color.blue)  // plotting the value on chart 
+
+// second indicator
+_perdyn = 3.141 / 100.0
+highVolatility = atr(13) > atr(40)                     
+var float dynamicLen = avg(172,233)
+plugged =  highVolatility
+dynamicLen := iff(plugged, max(172, dynamicLen * (1 - _perdyn)), min(233, dynamicLen * (1 + _perdyn)))
+_getdyn = wma(2 * wma(close, int(dynamicLen) / 2) - wma(close, int(dynamicLen)), int(sqrt(int(dynamicLen)))) 
+
+plot(_getdyn,color=color.yellow)
+// _getdyn is the final computed indicator
+
+// third indicator
+close_difference = close/close[1]-1
+Stdev = stdev(close_difference,20)
+_sma= sma(close_difference,20)
+Xtr=((_sma*sqrt(20))/Stdev)
+plot(Xtr,color=color.green)
+//Xtr is the final computed indicator
+
+// following are the 2 most difficult  custom functions i have ever made  and i dont have any idea how to do this in python
+// basically this function checks the whether the given 4 values (or any given indicator as its input) cross above the given 50 thresshold level ,  and opposite for other one 
+// instead of cross above it does the same but for cross below. untill all 4 lines are true then only it is true other wise false
+
+buycross(Reacter1,Reacter1_avg,Reacter2,Reacter2_avg,_50) =>
+    crossover(Reacter1,_50)
+    crossover(Reacter1_avg,_50)
+    crossover(Reacter2,_50)
+    crossover(Reacter2_avg,_50)
+sellcross(Reacter1,Reacter1_avg,Reacter2,Reacter2_avg,_50) =>
+    crossunder(Reacter1,_50)
+    crossunder(Reacter1_avg,_50)
+    crossunder(Reacter2,_50)
+    crossunder(Reacter2_avg,_50)
+
+// following code seems same but does diffrent thing which is not right thing to do 
+buycross(Reacter1,Reacter1_avg,Reacter2,Reacter2_avg,_50) =>
+  crossover(Reacter1,_50) and crossover(Reacter1_avg,_50) and crossover(Reacter2,_50) and crossover(Reacter2_avg,_50) 
